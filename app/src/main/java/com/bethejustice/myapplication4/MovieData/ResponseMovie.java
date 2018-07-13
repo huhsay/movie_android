@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class ResponseMovie {
 
-    String message;
-    int code;
-    String resultType;
-    public ArrayList<Movie> movies = new ArrayList<>();
+    public String message;
+    public int code;
+    public String resultType;
+    public ArrayList<Movie> result  = new ArrayList<>();
 
 }

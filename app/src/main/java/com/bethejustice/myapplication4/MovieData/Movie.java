@@ -9,10 +9,10 @@ public class Movie implements Parcelable{
     String title;
     String title_eng;
     String date;
-    int user_rating;
-    int audience_rating;
-    int reviewer_rating;
-    int reservation_rate;
+    float user_rating;
+    float audience_rating;
+    float reviewer_rating;
+    float reservation_rate;
     int reservation_grade;
     int grade;
     String thumb;
@@ -61,19 +61,19 @@ public class Movie implements Parcelable{
         return date;
     }
 
-    public int getUser_rating() {
+    public float getUser_rating() {
         return user_rating;
     }
 
-    public int getAudience_rating() {
+    public float getAudience_rating() {
         return audience_rating;
     }
 
-    public int getReviewer_rating() {
+    public float getReviewer_rating() {
         return reviewer_rating;
     }
 
-    public int getReservation_rate() {
+    public float getReservation_rate() {
         return reservation_rate;
     }
 
@@ -104,10 +104,10 @@ public class Movie implements Parcelable{
         dest.writeString(title);
         dest.writeString(title_eng);
         dest.writeString(date);
-        dest.writeInt(user_rating);
-        dest.writeInt(audience_rating);
-        dest.writeInt(reviewer_rating);
-        dest.writeInt(reservation_rate);
+        dest.writeFloat(user_rating);
+        dest.writeFloat(audience_rating);
+        dest.writeFloat(reviewer_rating);
+        dest.writeFloat(reservation_rate);
         dest.writeInt(reservation_grade);
         dest.writeInt(grade);
         dest.writeString(thumb);

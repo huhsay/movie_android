@@ -12,8 +12,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bethejustice.myapplication4.MovieData.Movie;
+import com.bethejustice.myapplication4.MovieData.ResponseMovie;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -21,6 +31,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
+    ResponseMovie responseMovie;
+    ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +51,28 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //데이터받아오기
+        if(AppHelper.requestQueue == null){
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+            Log.d("main","requestQueue");
+        }
+
+        sendRequest();
+
+
         //viewPager
-        ViewPager pager =(ViewPager) findViewById(R.id.viewPager);
-        pager.setOffscreenPageLimit(2);
-        pager.setPageMargin(-100);
-        MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
-        Fragment1 fragment1 = new Fragment1();
-        adapter.addItem(fragment1);
-        Fragment2 fragment2 = new Fragment2();
-        adapter.addItem(fragment2);
-        pager.setAdapter(adapter);
+
+
+//        ViewPager pager =(ViewPager) findViewById(R.id.viewPager);
+//        pager.setOffscreenPageLimit(10);
+//        pager.setPageMargin(-100);
+//        MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
+//
+//        for(int i=0; i<responseMovie.movies.size(); i++){
+//            MovieListFragment MLF = MovieListFragment.newInstance(responseMovie.movies.get(i));
+//            adapter.addItem(MLF);
+//        }
+//        pager.setAdapter(adapter);
     }
 
     @Override
@@ -130,7 +154,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void changeFragment(){
+    public void changeFragment(int id){
+
+        Log.d("main", id+"");
         MainFragment fragment = new MainFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
@@ -138,5 +164,53 @@ public class MainActivity extends AppCompatActivity
     public void changeTitle(String string){
         this.toolbar.setTitle(string);
 
+    }
+
+    public void sendRequest(){
+
+        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readMovieList";
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        processResponse(response);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+
+    }
+
+    public void processResponse(String response){
+        Gson gson = new Gson();
+        responseMovie = gson.fromJson(response, ResponseMovie.class);
+        if(responseMovie.code==200) {
+            setViewPager();
+        }
+    }
+
+    public void setViewPager(){
+        pager =(ViewPager) findViewById(R.id.viewPager);
+        pager.setOffscreenPageLimit(10);
+        pager.setPageMargin(-100);
+        MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
+
+        for(int i=0; i<responseMovie.result.size(); i++){
+            MovieListFragment MLF = MovieListFragment.newInstance(responseMovie.result.get(i));
+            adapter.addItem(MLF);
+        }
+        pager.setAdapter(adapter);
     }
 }
