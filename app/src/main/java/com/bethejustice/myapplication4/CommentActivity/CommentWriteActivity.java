@@ -1,4 +1,4 @@
-package com.bethejustice.myapplication4;
+package com.bethejustice.myapplication4.CommentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 
-public class writeComment extends AppCompatActivity {
+import com.bethejustice.myapplication4.R;
+
+public class CommentWriteActivity extends AppCompatActivity {
 
     RatingBar ratingBar;
     EditText commentView;

@@ -1,4 +1,4 @@
-package com.bethejustice.myapplication4;
+package com.bethejustice.myapplication4.MovieActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +21,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bethejustice.myapplication4.MovieData.Movie;
+import com.bethejustice.myapplication4.AppHelper;
+import com.bethejustice.myapplication4.MovieData.MovieInfo;
 import com.bethejustice.myapplication4.MovieData.ResponseMovie;
+import com.bethejustice.myapplication4.MovieData.ResponseMovieInfo;
+import com.bethejustice.myapplication4.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -31,7 +34,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
-    ResponseMovie responseMovie;
+    ResponseMovie responseMovieList;
+    ResponseMovieInfo movieInfoResponse;
     ViewPager pager;
 
     @Override
@@ -52,27 +56,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //데이터받아오기
-        if(AppHelper.requestQueue == null){
+        if (AppHelper.requestQueue == null) {
             AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
-            Log.d("main","requestQueue");
+            Log.d("main", "requestQueue");
         }
 
         sendRequest();
 
-
-        //viewPager
-
-
-//        ViewPager pager =(ViewPager) findViewById(R.id.viewPager);
-//        pager.setOffscreenPageLimit(10);
-//        pager.setPageMargin(-100);
-//        MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
-//
-//        for(int i=0; i<responseMovie.movies.size(); i++){
-//            MovieListFragment MLF = MovieListFragment.newInstance(responseMovie.movies.get(i));
-//            adapter.addItem(MLF);
-//        }
-//        pager.setAdapter(adapter);
     }
 
     @Override
@@ -139,7 +129,7 @@ public class MainActivity extends AppCompatActivity
             super(fm);
         }
 
-        public void addItem(Fragment item){
+        public void addItem(Fragment item) {
             items.add(item);
         }
 
@@ -154,19 +144,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void changeFragment(int id){
-
-        Log.d("main", id+"");
-        MainFragment fragment = new MainFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+    public void changeFragment(int id) {
+        MovieInfo movieInfo = movieInfoResponse.result.get(0);
+        MainFragment fragment = MainFragment.newInstance(movieInfo);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)  // fragment 스택에서 관리, 뒤로가기버튼눌렀을때 여기로 돌아옴.
+                .commit();
     }
 
-    public void changeTitle(String string){
-        this.toolbar.setTitle(string);
-
-    }
-
-    public void sendRequest(){
+    public void sendRequest() {
 
         String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readMovieList";
 
@@ -176,7 +164,7 @@ public class MainActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        processResponse(response);
+                        processResponse(response, 1);
 
                     }
                 },
@@ -193,22 +181,56 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void processResponse(String response){
-        Gson gson = new Gson();
-        responseMovie = gson.fromJson(response, ResponseMovie.class);
-        if(responseMovie.code==200) {
-            setViewPager();
-        }
+    public void sendRequest(int movieId) {
+        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readMovie?id=" + movieId;
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        processResponse(response, 2);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+
+        );
+
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
     }
 
-    public void setViewPager(){
-        pager =(ViewPager) findViewById(R.id.viewPager);
+    public void processResponse(String response, int index) {
+        Gson gson = new Gson();
+        if (index == 1) {
+            responseMovieList = gson.fromJson(response, ResponseMovie.class);
+            if (responseMovieList.code == 200) {
+                setViewPager();
+            }
+        } else {
+            movieInfoResponse = gson.fromJson(response, ResponseMovieInfo.class);
+            if(movieInfoResponse.code == 200){
+                changeFragment( movieInfoResponse.result.get(0).id);
+            }
+
+        }
+
+    }
+
+    public void setViewPager() {
+        pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setOffscreenPageLimit(10);
-        pager.setPageMargin(-100);
+        pager.setPageMargin(0);
         MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
 
-        for(int i=0; i<responseMovie.result.size(); i++){
-            MovieListFragment MLF = MovieListFragment.newInstance(responseMovie.result.get(i));
+        for (int i = 0; i < responseMovieList.result.size(); i++) {
+            MovieListFragment MLF = MovieListFragment.newInstance(responseMovieList.result.get(i));
             adapter.addItem(MLF);
         }
         pager.setAdapter(adapter);

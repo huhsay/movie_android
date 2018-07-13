@@ -1,10 +1,12 @@
-package com.bethejustice.myapplication4;
+package com.bethejustice.myapplication4.CommentActivity;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+
+import com.bethejustice.myapplication4.R;
 
 public class CommentItemView extends LinearLayout{
     public CommentItemView(Context context) {

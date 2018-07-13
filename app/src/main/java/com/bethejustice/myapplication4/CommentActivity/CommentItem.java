@@ -1,4 +1,4 @@
-package com.bethejustice.myapplication4;
+package com.bethejustice.myapplication4.CommentActivity;
 
 public class CommentItem {
     String userId;

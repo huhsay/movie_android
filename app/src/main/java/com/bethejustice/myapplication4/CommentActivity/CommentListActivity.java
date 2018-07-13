@@ -1,4 +1,4 @@
-package com.bethejustice.myapplication4;
+package com.bethejustice.myapplication4.CommentActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.bethejustice.myapplication4.R;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ public class CommentListActivity extends AppCompatActivity {
         writeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), writeComment.class);
+                Intent intent = new Intent(getApplicationContext(), CommentWriteActivity.class);
                 startActivity(intent);
             }
         });
