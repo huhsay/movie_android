@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +14,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.bethejustice.myapplication4.AppHelper;
+import com.bethejustice.myapplication4.CommentActivity.CommentAdapter;
 import com.bethejustice.myapplication4.CommentActivity.CommentItem;
 import com.bethejustice.myapplication4.CommentActivity.CommentItemView;
 import com.bethejustice.myapplication4.CommentActivity.CommentListActivity;
+import com.bethejustice.myapplication4.CommentData.ResponseComment;
 import com.bethejustice.myapplication4.MovieData.Movie;
 import com.bethejustice.myapplication4.MovieData.MovieInfo;
 import com.bethejustice.myapplication4.R;
 import com.bethejustice.myapplication4.CommentActivity.CommentWriteActivity;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -36,6 +47,9 @@ public class MainFragment extends Fragment {
     boolean thumb_up_s = false;
     boolean thumb_down_s = false;
     float rating;
+    int movieId;
+    RecyclerView recyclerView;
+    CommentAdapter adapter;
 
     Button thumbUpButton;
     Button thumbDownButton;
@@ -44,6 +58,9 @@ public class MainFragment extends Fragment {
     RatingBar ratingBar;
 
     MainActivity mainActivity;
+
+    ResponseComment responseComment;
+    CommentItem commentItem;
 
     public static MainFragment newInstance(MovieInfo movie) {
         MainFragment fragment = new MainFragment();
@@ -96,8 +113,6 @@ public class MainFragment extends Fragment {
         ratingBar = (RatingBar) rootView.findViewById(R.id.ratingBar);
         Button seeAllButton = (Button) rootView.findViewById(R.id.seeAllButton);
         Button commentWriteButton = (Button) rootView.findViewById(R.id.commentWriteButton);
-        ListView list = (ListView) rootView.findViewById(R.id.commentList);
-
 
         //text view
         TextView titleView = rootView.findViewById(R.id.text_title);
@@ -111,6 +126,16 @@ public class MainFragment extends Fragment {
         TextView synopsisView = rootView.findViewById(R.id.text_synopsis);
         TextView directorView = rootView.findViewById(R.id.text_director);
         TextView actorView = rootView.findViewById(R.id.text_actor);
+
+        //comment recyclerView
+        sendRequest();
+        recyclerView = rootView.findViewById(R.id.View_commentList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new CommentAdapter(container.getContext());
+        adapter.addItem(new CommentItem("hi", "hi", "hi",1));
+        recyclerView.setAdapter(adapter);
+
 
         /* 한줄평 부분
         CommentItemAdapter adapter = new CommentItemAdapter();
@@ -139,6 +164,7 @@ public class MainFragment extends Fragment {
             ratingBar.setRating(movieInfo.user_rating);
             likeView.setText(like + "");
             dislikeView.setText(dislike + "");
+            movieId = movieInfo.getId();
 
             Glide.with(container).load(movieInfo.getThumb()).into(thumbView);
             titleView.setText(movieInfo.getTitle());
@@ -244,42 +270,32 @@ public class MainFragment extends Fragment {
         return rootView;
     }
 
-    class CommentItemAdapter extends BaseAdapter {
-        ArrayList<CommentItem> commentItems = new ArrayList<>();
+    public void sendRequest(){
+        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readCommentList?id="+movieId+"&&limit=2";
 
-        public void addItem(CommentItem item) {
-            commentItems.add(item);
-        }
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        processResponse(response, 1);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-        @Override
-        public int getCount() {
-            return commentItems.size();
-        }
+                    }
+                }
+        );
 
-        @Override
-        public Object getItem(int position) {
-            return commentItems.get(position);
-        }
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+    }
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            CommentItemView view = null;
-            if (convertView == null) {
-                view = new CommentItemView(getContext());
-            } else {
-                view = (CommentItemView) convertView;
-            }
-
-            CommentItem item = commentItems.get(position);
-
-
-            return view;
-        }
+    public void processResponse(String response, int index){
+        Gson gson = new Gson();
+        responseComment = gson.fromJson(response, ResponseComment.class);
     }
 }
