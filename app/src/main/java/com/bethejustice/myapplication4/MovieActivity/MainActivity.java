@@ -107,8 +107,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else if (id == R.id.movieAPI) {
-            MainFragment mainFragment = new MainFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, mainFragment).commit();
 
         } else if (id == R.id.movieBook) {
 
