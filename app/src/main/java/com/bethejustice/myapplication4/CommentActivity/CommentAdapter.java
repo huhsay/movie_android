@@ -10,33 +10,40 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bethejustice.myapplication4.CommentData.Comment;
+import com.bethejustice.myapplication4.CommentData.ResponseComment;
 import com.bethejustice.myapplication4.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import static com.bethejustice.myapplication4.R.id.userId;
+
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder>{
     Context context;
-    ArrayList<CommentItem> items = new ArrayList<>();
+    ResponseComment itemList;
+    ArrayList<Comment> items = new ArrayList<>();
 
     public CommentAdapter(Context context) {
         this.context = context;
     }
-
 
     // manager가 호출하는 callback 메소드
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View itemView = inflater.inflate(R.layout.comment_item_view, parent, false);
+        View itemView = inflater.inflate(R.layout.view_comment_item, parent, false);
 
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CommentItem item = items.get(position);
+        Comment item = items.get(position);
         holder.setItem(item);
+
     }
 
     @Override
@@ -49,26 +56,36 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         TextView time;
         RatingBar ratingBar;
         TextView comment;
-        TextView commnet_like;
+        TextView comment_like;
 
         public ViewHolder(View itemView){
             super(itemView);
 
-            userId = itemView.findViewById(R.id.userId);
-            time = itemView.findViewById(R.id.time);
+            userId = (TextView) itemView.findViewById(R.id.userId);
+            time = (TextView) itemView.findViewById(R.id.time);
+            ratingBar = itemView.findViewById(R.id.ratingBar);
+            comment = (TextView) itemView.findViewById(R.id.comment);
+            comment_like = (TextView) itemView.findViewById(R.id.comment_like);
+
         }
 
-        public void setItem(CommentItem item) {
-            userId.setText(item.getUserId());
+        public void setItem(Comment item) {
+            if(userId!=null){
+            userId.setText(item.getWriter());}
             time.setText(item.getTime());
+            ratingBar.setRating(item.getRating());
+            comment.setText(item.getContents());
+            comment_like.setText(item.getRecommend()+"");
         }
 
 
     }
 
-    public void addItem(CommentItem item) { items.add(item);}
+    public void addItem(Comment item) { items.add(item);}
 
-    public void addItemAll(ArrayList<CommentItem> items) { this.items=items;};
+    public void addItemAll(ResponseComment itemsList) {
+        this.itemList = itemsList;
+        this.items = itemsList.getResult();}
 
 
 

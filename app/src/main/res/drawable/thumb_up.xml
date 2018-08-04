@@ -3,11 +3,9 @@
 
     <item
         android:drawable ="@drawable/ic_thumb_up_selected"
-        android:state_pressed="true"
-        ></item>
+        android:state_selected="true"/>
 
     <item
-        android:drawable="@drawable/ic_thumb_up"
-        >
-    </item>
+        android:drawable="@drawable/ic_thumb_up"/>
+
 </selector>

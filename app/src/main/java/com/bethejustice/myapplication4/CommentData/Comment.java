@@ -1,6 +1,6 @@
 package com.bethejustice.myapplication4.CommentData;
 
-public class CommentItem {
+public class Comment {
 
     int id;
     String writer;
@@ -9,7 +9,7 @@ public class CommentItem {
     String time;
     int timestamp;
     float rating;
-    String content;
+    String contents;
     int recommend;
 
     public int getId() {
@@ -40,8 +40,8 @@ public class CommentItem {
         return rating;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
     public int getRecommend() {

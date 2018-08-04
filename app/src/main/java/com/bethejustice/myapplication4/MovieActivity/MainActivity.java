@@ -142,16 +142,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void changeFragment(int id) {
-        MovieInfo movieInfo = movieInfoResponse.result.get(0);
-        MainFragment fragment = MainFragment.newInstance(movieInfo);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(null)  // fragment 스택에서 관리, 뒤로가기버튼눌렀을때 여기로 돌아옴.
-                .commit();
-    }
-
     public void sendRequest() {
 
         String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readMovieList";
@@ -216,9 +206,17 @@ public class MainActivity extends AppCompatActivity
             if(movieInfoResponse.code == 200){
                 changeFragment( movieInfoResponse.result.get(0).id);
             }
-
         }
+    }
 
+    public void changeFragment(int id) {
+        MovieInfo movieInfo = movieInfoResponse.result.get(0);
+        MainFragment fragment = MainFragment.newInstance(movieInfo);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(null)  // fragment 스택에서 관리, 뒤로가기버튼눌렀을때 여기로 돌아옴.
+                .commit();
     }
 
     public void setViewPager() {

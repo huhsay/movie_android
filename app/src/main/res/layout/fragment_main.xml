@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="군도"
+                tools:text="군도"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -45,7 +45,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="25dp"
-                app:layout_constraintBottom_toBottomOf="@+id/CinemaName"
+                app:layout_constraintBottom_toBottomOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_15" />
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="2014.07.23 개봉"
+                tools:text="2014.07.23 개봉"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -66,7 +66,7 @@
                 android:id="@+id/text_genre_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="액션 / 137분"
+                tools:text="액션 / 137분"
                 android:textColor="#ffffff"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -259,7 +259,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
-                android:text="@string/tempSynop" />
+                tools:text="줄거리" />
 
         </LinearLayout>
 
@@ -300,7 +300,7 @@
 
         </LinearLayout>
 
-        <!--갤러리-->
+        <!--갤러리/진행중-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -381,7 +381,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/View_commentList"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"/>
@@ -400,6 +400,7 @@
 
         </LinearLayout>
 
+        <!--하단-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

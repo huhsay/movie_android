@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#dddddd">
 
+    <!--title-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,12 +25,12 @@
             android:background="@drawable/background_underline">
 
             <TextView
-                android:id="@+id/CinemaName"
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CinemaName"
+                tools:text="군도"
                 android:textSize="25dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/certification"
@@ -59,12 +61,14 @@
                 android:id="@+id/ratings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8.2 (1,142명 참여)"/>
+                tools:text="8.2 (1,142명 참여)"
+                android:layout_marginLeft="5dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
+    <!--한줄평-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -81,11 +85,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="REVIEW"
+                android:layout_centerVertical="true"
+                android:text="한줄평"
                 android:textColor="#000000"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:layout_centerVertical="true"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -102,28 +106,29 @@
                     android:src="@drawable/ic_review_selected"
                     android:layout_gravity="center_vertical"/>
 
-                <Button
+                <TextView
                     android:id="@+id/commentWriteButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="WRITE"
+                    android:layout_height="40dp"
+                    android:text="작성하기"
+                    android:textSize="15sp"
                     android:textColor="#f72819"
-                    android:textSize="15dp"
                     android:textStyle="bold"
-                    android:background="#ffffff"/>
+                    android:background="@color/background_white"
+                    android:gravity="center"
+                    android:layout_marginLeft="5dp"/>
 
             </LinearLayout>
 
         </RelativeLayout>
 
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/view_commentList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </android.support.v7.widget.RecyclerView>
-
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_commentList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
 
     </LinearLayout>
 

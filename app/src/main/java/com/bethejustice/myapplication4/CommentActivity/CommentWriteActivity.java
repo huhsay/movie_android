@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.bethejustice.myapplication4.R;
 
@@ -15,6 +16,9 @@ public class CommentWriteActivity extends AppCompatActivity {
 
     RatingBar ratingBar;
     EditText commentView;
+    int movieId;
+    String title;
+    float User_rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +27,16 @@ public class CommentWriteActivity extends AppCompatActivity {
 
         ratingBar =(RatingBar) findViewById(R.id.ratingBar);
         commentView = (EditText) findViewById(R.id.comment);
-        Button cancleButton = (Button) findViewById(R.id.cancelButton);
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
         Button saveButton = (Button) findViewById(R.id.saveButton);
+        TextView title = findViewById(R.id.title);
+
 
         Intent receivedIntent = getIntent();
-        float rating = receivedIntent.getFloatExtra("rating",0.0f);
-        ratingBar.setStepSize(rating);
+        title.setText(receivedIntent.getStringExtra("title"));
 
-        cancleButton.setOnClickListener(new View.OnClickListener() {
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();

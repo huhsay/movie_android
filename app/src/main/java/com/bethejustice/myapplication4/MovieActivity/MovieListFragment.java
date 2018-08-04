@@ -54,7 +54,7 @@ public class MovieListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.list_fragment, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_list, container, false);
 
         ImageView poster = rootView.findViewById(R.id.image_thumb);
         TextView title = (TextView) rootView.findViewById(R.id.text_title);
@@ -74,7 +74,6 @@ public class MovieListFragment extends Fragment {
                 activity.sendRequest(userId);
             }
         });
-        Log.d("movieIdAtList",userId+"");
 
         return rootView;
     }
