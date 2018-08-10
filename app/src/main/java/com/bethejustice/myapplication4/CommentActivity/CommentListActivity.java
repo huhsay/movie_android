@@ -2,10 +2,12 @@ package com.bethejustice.myapplication4.CommentActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bethejustice.myapplication4.AppHelper;
 import com.bethejustice.myapplication4.CommentData.ResponseComment;
 import com.bethejustice.myapplication4.R;
+import com.bethejustice.myapplication4.database.DatabaseHelper;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class CommentListActivity extends AppCompatActivity {
     CommentAdapter adapter;
     RecyclerView recyclerView;
     ResponseComment responseComment;
+    Toolbar toolbar;
 
     String titleString;
     float user_rating;
@@ -73,7 +77,7 @@ public class CommentListActivity extends AppCompatActivity {
 
 
     public void sendRequest() {
-        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readCommentList?id=" + movieId;
+        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readCommentList?id=" + movieId+"&limit=100";
 
         Log.d("MainFragment", url);
 
@@ -101,10 +105,7 @@ public class CommentListActivity extends AppCompatActivity {
     public void processResponse(String response) {
         Gson gson = new Gson();
         responseComment = gson.fromJson(response, ResponseComment.class);
-        int s = responseComment.result.size();
-
-
-
+        DatabaseHelper.insertComment(responseComment.result);
         setCommentList();
     }
 

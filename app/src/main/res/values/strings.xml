@@ -6,4 +6,25 @@
     <string name="nav_header_subtitle">mikejungglobal@gamil.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <!--main fragment-->
+    <string name="text_reservation">예매율</string>
+    <string name="text_rating">평점</string>
+    <string name="text_audience">누적관객수</string>
+    <string name="text_synopsis">줄거리</string>
+    <string name="text_director">감독/출연</string>
+    <string name="text_gallery">갤러리</string>
+    <string name="text_review">한줄평</string>
+    <string name="btn_seeall">모두보기</string>
+    <string name="btn_reservation">예매하기</string>
+
+    <!--list fragment-->
+    <string name="btn_detail">상세보기</string>
+
+    <!--review write activity-->
+    <string name="ratingbar_msg">평점을 입력해주세요</string>
+    <string name="review_hint">100자 이내로 작성해 주세요</string>
+    <string name="btn_save">저장</string>
+    <string name="btn_cancel">취소</string>
+
 </resources>
