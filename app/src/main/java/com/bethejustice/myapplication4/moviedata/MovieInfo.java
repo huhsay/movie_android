@@ -1,34 +1,33 @@
-package com.bethejustice.myapplication4.MovieData;
+package com.bethejustice.myapplication4.moviedata;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-
 public class MovieInfo implements Parcelable{
 
-    public String title;
-    public int id;
-    public String date;
-    public float user_rating;
-    public float audience_rating;
-    public float reviewer_rating;
-    public float reservation_rate;
-    public int reservation_grade;
-    public int grade;
-    public String thumb;
-    public String image;
-    public String photos;
-    public String videos;
-    public String outlinks;
-    public String genre;
-    public int duration;
-    public int audience;
-    public String synopsis;
-    public String director;
-    public String actor;
-    public int like;
-    public int dislike;
+    private String title;
+    private int id;
+    private String date;
+    private float user_rating;
+    private float audience_rating;
+    private float reviewer_rating;
+    private float reservation_rate;
+    private int reservation_grade;
+    private int grade;
+    private String thumb;
+    private String image;
+    private String photos;
+    private String videos;
+    private String outlinks;
+    private String genre;
+    private int duration;
+    private int audience;
+    private String synopsis;
+    private String director;
+    private String actor;
+    private int like;
+    private int dislike;
 
 
     protected MovieInfo(Parcel in) {
@@ -54,6 +53,31 @@ public class MovieInfo implements Parcelable{
         actor = in.readString();
         like = in.readInt();
         dislike = in.readInt();
+    }
+
+    public MovieInfo(Cursor in) {
+        title = in.getString(0);
+        id = in.getInt(1);
+        date = in.getString(2);
+        user_rating = in.getFloat(3);
+        audience_rating = in.getFloat(4);
+        reviewer_rating = in.getFloat(5);
+        reservation_rate = in.getFloat(6);
+        reservation_grade = in.getInt(7);
+        grade = in.getInt(8);
+        thumb = in.getString(9);
+        image = in.getString(10);
+        photos = in.getString(11);
+        videos = in.getString(12);
+        outlinks = in.getString(13);
+        genre = in.getString(14);
+        duration = in.getInt(15);
+        audience = in.getInt(16);
+        synopsis = in.getString(17);
+        director = in.getString(18);
+        actor = in.getString(19);
+        like = in.getInt(20);
+        dislike = in.getInt(21);
     }
 
     @Override

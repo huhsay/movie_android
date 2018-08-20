@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MovieActivity.MainActivity"
+    tools:context=".movieactivity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <android.support.v4.view.ViewPager
@@ -17,5 +17,15 @@
         android:paddingEnd="30dp"
         android:paddingStart="30dp"
         android:background="@drawable/main_background"/>
+
+
+    <include
+        layout="@layout/menu_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewPager" />
 
 </android.support.constraint.ConstraintLayout>

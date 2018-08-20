@@ -1,4 +1,4 @@
-package com.bethejustice.myapplication4.CommentActivity;
+package com.bethejustice.myapplication4.commentactivity;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

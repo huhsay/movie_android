@@ -1,4 +1,4 @@
-package com.bethejustice.myapplication4.MovieData;
+package com.bethejustice.myapplication4.moviedata;
 
 import java.util.ArrayList;
 

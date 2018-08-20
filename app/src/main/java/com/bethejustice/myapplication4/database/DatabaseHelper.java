@@ -1,13 +1,14 @@
 package com.bethejustice.myapplication4.database;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.bethejustice.myapplication4.CommentData.Comment;
-import com.bethejustice.myapplication4.MovieData.Movie;
-import com.bethejustice.myapplication4.MovieData.MovieInfo;
+import com.bethejustice.myapplication4.commentdata.Comment;
+import com.bethejustice.myapplication4.moviedata.Movie;
+import com.bethejustice.myapplication4.moviedata.MovieInfo;
 
 import java.util.ArrayList;
 
@@ -16,8 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static SQLiteDatabase database;
     private static String createTableOutlineSql = "create table if not exists outline" +
             "("+
-            "    _id integer PRIMARY KEY autoincrement, " +
-            "    id integer, " +
+            "    id integer PRIMARY KEY autoincrement," +
             "    title text, " +
             "    title_eng text, " +
             "    date text, " +
@@ -33,9 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static String createTableMovieSql = "create table if not exists movie"+
             "(" +
-            "    _id integer PRIMARY KEY autoincrement,"+
             "    title text, " +
-            "    id integer," +
+            "    id integer PRIMARY KEY autoincrement," +
             "    date text," +
             "    user_rating float," +
             "    audience_rating float," +
@@ -60,8 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static String createTableReviewSql = "create table if not exists review" +
             "(" +
-            "    _id integer PRIMARY KEY autoincrement," +
-            "    id integer," +
+            "    id integer PRIMARY KEY autoincrement," +
             "    writer text," +
             "    movieId integer," +
             "    writer_image text," +
@@ -119,7 +117,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for(int i = 0; i<movieList.size(); i++) {
             Movie temp = movieList.get(i);
             Object[] item = {temp.getId(), temp.getTitle(), temp.getTitle_eng(), temp.getDate(), temp.getUser_rating(), temp.getAudience_rating(), temp.getReviewer_rating(), temp.getReservation_rate(), temp.getReservation_grade(), temp.getGrade(), temp.getThumb(), temp.getImage()};
-            database.execSQL(insertMovieListSql, item);
+
+            String selectMovieSql = "SELECT * from outline where id=" + item[0];
+            Cursor cursor = database.rawQuery(selectMovieSql, null);
+            if(cursor.getCount()==0) {
+                database.execSQL(insertMovieListSql, item);
+            }
         }
     }
 
@@ -129,21 +132,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         for(int i = 0; i < movieInfoList.size(); i++) {
             MovieInfo temp = movieInfoList.get(i);
-            Object[] item = {temp.getTitle(), temp.getId(), temp.getDate(), temp.getUser_rating(), temp.getAudience_rating(), temp.getReviewer_rating(), temp.getReservation_rate(), temp.getReservation_grade(), temp.getThumb(),temp.getImage(), temp.getPhotos(), temp.getVideos(), temp.getOutlinks(), temp.getGenre(), temp.getDuration(), temp.getAudience(), temp.getSynopsis(), temp.getDirector(), temp.getActor(), temp.getLike(), temp.getDislike()};
-            database.execSQL(insertMovieSql, item);
+            Object[] item = {temp.getTitle(), temp.getId(), temp.getDate(), temp.getUser_rating(), temp.getAudience_rating(), temp.getReviewer_rating(), temp.getReservation_rate(), temp.getReservation_grade(), temp.getGrade(), temp.getThumb(),temp.getImage(), temp.getPhotos(), temp.getVideos(), temp.getOutlinks(), temp.getGenre(), temp.getDuration(), temp.getAudience(), temp.getSynopsis(), temp.getDirector(), temp.getActor(), temp.getLike(), temp.getDislike()};
+
+            String selectMovieSql = "SELECT * from movie where id=" + item[1];
+            Cursor cursor = database.rawQuery(selectMovieSql, null);
+            if(cursor.getCount()==0) {
+                database.execSQL(insertMovieSql, item);
+            }
         }
     }
 
     public static void insertComment(ArrayList<Comment> comment){
-
         String insertCommentSql = "INSERT INTO review(id, writer, movieId, writer_image, time, timestamp, rating, contents, recommend) values(?,?,?,?,?,?,?,?,?)";
 
         for(int i = 0; i < comment.size(); i++) {
             Comment temp = comment.get(i);
-            Object[] item = {temp.getId(), temp.getWriter(), temp.getWriter_image(), temp.getTime(), temp.getTimestamp(), temp.getRating(), temp.getContents(), temp.getRecommend()};
-            database.execSQL(insertCommentSql, item);
-        }
+            Object[] item = {temp.getId(), temp.getWriter(), temp.getMovieId(), temp.getWriter_image(), temp.getTime(), temp.getTimestamp(), temp.getRating(), temp.getContents(), temp.getRecommend()};
 
+            String selectMovieSql = "SELECT * from review where movieId=" + item[2];
+            Cursor cursor = database.rawQuery(selectMovieSql, null);
+            if(cursor.getCount()==0) {
+                database.execSQL(insertCommentSql, item);
+            }
+        }
+    }
+
+    public static Cursor selectMovieList(){
+        String selectMovieList = "SELECT * FROM outline";
+        Cursor cursor = database.rawQuery(selectMovieList, null);
+        return cursor;
+    }
+
+    public static Cursor selectMovie(int id){
+        String selectMovie = "SELECT * FROM movie WHERE id="+id;
+        Cursor cursor = database.rawQuery(selectMovie, null);
+        return cursor;
+    }
+
+    public static Cursor selectComment(int id){
+        String selectMovie = "SELECT * FROM review WHERE movieId="+id;
+        Cursor cursor = database.rawQuery(selectMovie, null);
+        return cursor;
     }
 
 

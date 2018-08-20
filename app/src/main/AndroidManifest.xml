@@ -13,17 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MovieActivity.MainActivity"
-            android:label="@string/app_name">
+            android:name=".movieactivity.SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CommentActivity.CommentListActivity"></activity>
-        <activity android:name=".CommentActivity.CommentWriteActivity"></activity>
-        <activity android:name=".MovieActivity.ImgActivity"></activity>
+        <activity android:name=".commentactivity.CommentListActivity"></activity>
+        <activity android:name=".commentactivity.CommentWriteActivity"></activity>
+        <activity android:name=".movieactivity.ImgActivity"></activity>
+        <activity android:name=".movieactivity.MainActivity"></activity>
     </application>
 
 </manifest>

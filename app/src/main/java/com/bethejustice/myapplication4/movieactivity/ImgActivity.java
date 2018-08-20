@@ -1,9 +1,8 @@
-package com.bethejustice.myapplication4.MovieActivity;
+package com.bethejustice.myapplication4.movieactivity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import com.bethejustice.myapplication4.R;
 import com.bumptech.glide.Glide;
@@ -21,8 +20,6 @@ public class ImgActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         Glide.with(this).load(url).into(imageView);
-
-
 
     }
 }

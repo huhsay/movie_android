@@ -1,22 +1,23 @@
-package com.bethejustice.myapplication4.MovieData;
+package com.bethejustice.myapplication4.moviedata;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Movie implements Parcelable{
     //changed
-    int id;
-    String title;
-    String title_eng;
-    String date;
-    float user_rating;
-    float audience_rating;
-    float reviewer_rating;
-    float reservation_rate;
-    int reservation_grade;
-    int grade;
-    String thumb;
-    String image;
+    private int id;
+    private String title;
+    private String title_eng;
+    private String date;
+    private float user_rating;
+    private float audience_rating;
+    private float reviewer_rating;
+    private float reservation_rate;
+    private int reservation_grade;
+    private int grade;
+    private String thumb;
+    private String image;
 
     protected Movie(Parcel in) {
         id = in.readInt();
@@ -32,6 +33,23 @@ public class Movie implements Parcelable{
         thumb = in.readString();
         image = in.readString();
     }
+
+    public Movie(Cursor in) {
+        id = in.getInt(0);
+        title = in.getString(1);
+        title_eng = in.getString(2);
+        date = in.getString(3);
+        user_rating = in.getFloat(4);
+        audience_rating = in.getFloat(5);
+        reviewer_rating = in.getFloat(6);
+        reservation_rate = in.getFloat(7);
+        reservation_grade = in.getInt(8);
+        grade = in.getInt(9);
+        thumb = in.getString(10);
+        image = in.getString(11);
+    }
+
+
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override

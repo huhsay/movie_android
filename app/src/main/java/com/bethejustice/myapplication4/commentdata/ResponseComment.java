@@ -1,4 +1,4 @@
-package com.bethejustice.myapplication4.CommentData;
+package com.bethejustice.myapplication4.commentdata;
 
 import java.util.ArrayList;
 

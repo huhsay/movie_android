@@ -1,7 +1,6 @@
-package com.bethejustice.myapplication4.CommentActivity;
+package com.bethejustice.myapplication4.commentactivity;
 
 import android.content.Context;
-import android.media.Rating;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,20 +9,23 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bethejustice.myapplication4.CommentData.Comment;
-import com.bethejustice.myapplication4.CommentData.ResponseComment;
+import com.bethejustice.myapplication4.commentdata.Comment;
+import com.bethejustice.myapplication4.commentdata.ResponseComment;
 import com.bethejustice.myapplication4.R;
-
-import org.w3c.dom.Text;
+import com.bethejustice.myapplication4.movieactivity.ImageAdapter;
 
 import java.util.ArrayList;
-
-import static com.bethejustice.myapplication4.R.id.userId;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder>{
     Context context;
     ResponseComment itemList;
     ArrayList<Comment> items = new ArrayList<>();
+    OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(ViewHolder holder, View view, int position);
+
+    }
 
     public CommentAdapter(Context context) {
         this.context = context;
@@ -43,6 +45,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment item = items.get(position);
         holder.setItem(item);
+        holder.setOnItemClickListener(listener);
 
     }
 
@@ -57,16 +60,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         RatingBar ratingBar;
         TextView comment;
         TextView comment_like;
+        TextView recomment;
+        OnItemClickListener listener;
 
         public ViewHolder(View itemView){
             super(itemView);
 
-            userId = (TextView) itemView.findViewById(R.id.userId);
-            time = (TextView) itemView.findViewById(R.id.time);
+            userId = itemView.findViewById(R.id.userId);
+            time = itemView.findViewById(R.id.time);
             ratingBar = itemView.findViewById(R.id.ratingBar);
-            comment = (TextView) itemView.findViewById(R.id.comment);
-            comment_like = (TextView) itemView.findViewById(R.id.comment_like);
+            comment = itemView.findViewById(R.id.review);
+            comment_like = itemView.findViewById(R.id.comment_like);
+            recomment = itemView.findViewById(R.id.btn_recomment);
 
+            recomment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    if(listener!=null){
+                        listener.onItemClick(ViewHolder.this, v, position);
+                    }
+                }
+            });
         }
 
         public void setItem(Comment item) {
@@ -78,15 +94,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             comment_like.setText(item.getRecommend()+"");
         }
 
-
+        public void setOnItemClickListener(OnItemClickListener listener){
+            this.listener = listener;
+        }
     }
+
+    public Comment getItem(int position) {return items.get(position);}
 
     public void addItem(Comment item) { items.add(item);}
 
-    public void addItemAll(ResponseComment itemsList) {
-        this.itemList = itemsList;
-        this.items = itemsList.getResult();}
+    public void addItemAll(ArrayList<Comment> itemsList) {
+        //this.itemList = itemsList;
+        this.items = itemsList;}
 
-
-
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
+    }
 }
