@@ -14,12 +14,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -66,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     ViewPager pager;
     NetworkState networkState;
 
+
     Animation animation_down;
     Animation animation_up;
 
@@ -74,16 +77,39 @@ public class MainActivity extends AppCompatActivity
     View orderOptionList;
     boolean orderOptionIsShown = false;
 
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+//        super.onActivityResult(requestCode, resultCode, intent);
+//        Toast.makeText(this, "resultmain", Toast.LENGTH_LONG).show();
+//
+//        if(resultCode == RESULT_OK) {
+//            if (requestCode == 100) {
+//                FragmentManager manager = getSupportFragmentManager();
+//                FragmentTransaction transaction = manager.beginTransaction();
+//                manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//                //화면전환 수정중
+//                transaction.commit();
+//            }
+//
+//            if (requestCode == 400) {
+//
+//                Fragment frg = getSupportFragmentManager().findFragmentById(R.id.container);
+//                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//                ft.detach(frg);
+//                ft.attach(frg);
+//                ft.commit();
+//                Log.d("hello", "hello");
+//
+//                Toast.makeText(this, "hello", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == 100) {
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            //화면전환 수정중
-            transaction.commit();
-        }
+    protected void onStart() {
+        super.onStart();
+
+        Log.d("re", "restarted");
     }
 
     @Override

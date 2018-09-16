@@ -149,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Comment temp = comment.get(i);
             Object[] item = {temp.getId(), temp.getWriter(), temp.getMovieId(), temp.getWriter_image(), temp.getTime(), temp.getTimestamp(), temp.getRating(), temp.getContents(), temp.getRecommend()};
 
-            String selectMovieSql = "SELECT * from review where movieId=" + item[2];
+            String selectMovieSql = "SELECT * from review where movieId=" + item[1];
             Cursor cursor = database.rawQuery(selectMovieSql, null);
             if(cursor.getCount()==0) {
                 database.execSQL(insertCommentSql, item);

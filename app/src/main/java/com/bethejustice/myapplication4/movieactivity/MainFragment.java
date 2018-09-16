@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -62,6 +63,16 @@ public class MainFragment extends Fragment {
     InteractionListener listener;
     NetworkState networkState;
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == -1){
+            if(requestCode == 400){
+                Toast.makeText(getContext(), "result fragment", Toast.LENGTH_LONG);
+            }
+        }
+    }
+
     CommentAdapter adapter;
     ResponseComment responseComment;
 
@@ -83,13 +94,6 @@ public class MainFragment extends Fragment {
             castException.printStackTrace();
         }
     }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -263,10 +267,17 @@ public class MainFragment extends Fragment {
                 intent.putExtra("title", movieInfo.getTitle())
                         .putExtra("movieId", movieId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                startActivityForResult(intent, 400);
             }
         });
         return rootView;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
     }
 
     public void sendRequest() {
@@ -303,6 +314,28 @@ public class MainFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    public void readCommentDate() {
+
+        Cursor commentCursor = DatabaseHelper.selectComment(movieId);
+        ArrayList<Comment> list = new ArrayList<>();
+
+        for(int i = 0 ; i < 2; i++) {
+            if(commentCursor.moveToNext()) {
+                Comment temp = new Comment(commentCursor);
+                list.add(temp);
+            }
+        }
+//        if (commentCursor.moveToPrevious()) {
+//            Comment temp = new Comment(commentCursor);
+//            list.add(temp);
+//            adapter.addItemAll(list);
+//            adapter.notifyDataSetChanged();
+//        }
+
+        adapter.addItemAll(list);
+        adapter.notifyDataSetChanged();
+    }
+
     public ArrayList<GalleryItem> stringToGalleryItem(String photos, int distinct) {
         if (photos != null) {
             String[] string = photos.split(",");
@@ -321,7 +354,12 @@ public class MainFragment extends Fragment {
         super.onResume();
         listener.changeAppTitle(getResources().getString(R.string.text_movie));
         listener.removeOrderMenus(true);
-        readCommentDate();
+
+        if (networkState.checkNetworkConnection() == NetworkState.TYPE_NOT_CONNECTED) {
+            readCommentDate();
+        }else{
+            sendRequest();
+        }
     }
 
     @Override
@@ -336,23 +374,6 @@ public class MainFragment extends Fragment {
 
         listener.changeAppTitle(getResources().getString(R.string.text_movieList));
         listener.removeOrderMenus(false);
-    }
-
-    public void readCommentDate() {
-
-        Cursor commentCursor = DatabaseHelper.selectComment(movieId);
-        ArrayList<Comment> list = new ArrayList<>();
-
-        if (commentCursor.moveToLast()) {
-            Comment temp = new Comment(commentCursor);
-            list.add(temp);
-        }
-        if (commentCursor.moveToPrevious()) {
-            Comment temp = new Comment(commentCursor);
-            list.add(temp);
-            adapter.addItemAll(list);
-            adapter.notifyDataSetChanged();
-        }
     }
 
     public void sendLikeRequest(Object like, Object dislike) {

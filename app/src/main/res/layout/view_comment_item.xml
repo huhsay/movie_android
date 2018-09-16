@@ -43,6 +43,7 @@
         android:layout_marginTop="5dp"
         tools:text="id"
         android:textSize="10dp"
+        android:textColor="@color/textGray"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />

@@ -65,6 +65,7 @@ public class CommentWriteActivity extends AppCompatActivity {
                 String comment = commentView.getText().toString();
                 rating = ratingBar.getRating() * 2;
                 sendRequest(comment, rating);
+                setResult(RESULT_OK);
                 finish();
             }
         });

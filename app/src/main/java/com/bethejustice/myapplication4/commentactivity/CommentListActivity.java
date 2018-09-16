@@ -41,6 +41,28 @@ public class CommentListActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK) {
+            if (requestCode == 500) {
+                if (networkState.checkNetworkConnection() == NetworkState.TYPE_NOT_CONNECTED) {
+                    Cursor commentCursor = DatabaseHelper.selectComment(movieId);
+                    ArrayList<Comment> list = new ArrayList<>();
+                    while (commentCursor.moveToNext()) {
+                        Comment temp = new Comment(commentCursor);
+                        list.add(temp);
+                    }
+                    setCommentList(list);
+                } else {
+
+                    sendRequest();
+                }
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment_list);
@@ -86,7 +108,8 @@ public class CommentListActivity extends AppCompatActivity {
                 Comment temp = new Comment(commentCursor);
                 list.add(temp);
             }
-            setCommentList(list);
+            sendRequest();
+            //setCommentList(list);
         }else{
 
             sendRequest();
@@ -100,7 +123,7 @@ public class CommentListActivity extends AppCompatActivity {
                 intent.putExtra("title", titleString)
                         .putExtra("movieId", movieId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
+                startActivityForResult(intent, 500);
             }
         });
     }
@@ -143,12 +166,13 @@ public class CommentListActivity extends AppCompatActivity {
     public void processResponse(String response) {
         Gson gson = new Gson();
         responseComment = gson.fromJson(response, ResponseComment.class);
-        DatabaseHelper.insertComment(responseComment.result);
+        //DatabaseHelper.insertComment(responseComment.result);
         setCommentList(responseComment.result);
     }
 
     public void sendCommentLikeRequest(int reviewId, String writer) {
-        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/increaseRecommend?review_id=" + reviewId +"&writer=" + writer;
+        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/increaseRecommend?review_id=" + reviewId +"&writer=" + writer+"&limit=100";
+
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
