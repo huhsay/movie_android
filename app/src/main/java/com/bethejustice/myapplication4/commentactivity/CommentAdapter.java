@@ -86,12 +86,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         }
 
         public void setItem(Comment item) {
-            if(userId!=null){
-            userId.setText(item.getWriter());}
-            time.setText(item.getTime());
-            ratingBar.setRating(item.getRating());
-            comment.setText(item.getContents());
-            comment_like.setText(item.getRecommend()+"");
+            if(userId!=null) {
+                userId.setText(item.getWriter());
+                time.setText(item.getTime());
+                ratingBar.setRating(item.getRating() / 2);
+                comment.setText(item.getContents());
+                comment_like.setText(item.getRecommend() + "");
+            }
         }
 
         public void setOnItemClickListener(OnItemClickListener listener){

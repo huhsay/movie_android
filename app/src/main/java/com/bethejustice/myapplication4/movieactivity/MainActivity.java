@@ -77,20 +77,19 @@ public class MainActivity extends AppCompatActivity
     View orderOptionList;
     boolean orderOptionIsShown = false;
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//        super.onActivityResult(requestCode, resultCode, intent);
-//        Toast.makeText(this, "resultmain", Toast.LENGTH_LONG).show();
-//
-//        if(resultCode == RESULT_OK) {
-//            if (requestCode == 100) {
-//                FragmentManager manager = getSupportFragmentManager();
-//                FragmentTransaction transaction = manager.beginTransaction();
-//                manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//                //화면전환 수정중
-//                transaction.commit();
-//            }
-//
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if(resultCode == RESULT_OK) {
+            if (requestCode == 100) {
+                FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+                manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                //화면전환 수정중
+                transaction.commit();
+            }
+
 //            if (requestCode == 400) {
 //
 //                Fragment frg = getSupportFragmentManager().findFragmentById(R.id.container);
@@ -102,14 +101,12 @@ public class MainActivity extends AppCompatActivity
 //
 //                Toast.makeText(this, "hello", Toast.LENGTH_LONG).show();
 //            }
-//        }
-//    }
+        }
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        Log.d("re", "restarted");
     }
 
     @Override
@@ -282,6 +279,14 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, 100);
+
+//            Fragment frg = getSupportFragmentManager().findFragmentById(R.id.container);
+//
+//            if(frg instanceof MainFragment){
+//                FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
+//                tr.remove(frg);
+//                tr.commit();
+//            }
 
         } else if (id == R.id.movieAPI) {
 

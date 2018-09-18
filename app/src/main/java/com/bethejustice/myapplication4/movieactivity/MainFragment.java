@@ -132,7 +132,8 @@ public class MainFragment extends Fragment {
         if (movieInfo != null) {
             likeCunt = movieInfo.getLike();
             dislikeCunt = movieInfo.getDislike();
-            ratingBar.setRating(movieInfo.getAudience_rating());
+            ratingBar.setRating(movieInfo.getUser_rating());
+            Log.d("ratingbar", Float.toString(movieInfo.getUser_rating()));
             likeView.setText(Integer.toString(likeCunt));
             dislikeView.setText(Integer.toString(dislikeCunt));
             movieId = movieInfo.getId();
@@ -255,10 +256,6 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        /**
-         *  한줄평 갱신하기 수정!
-         */
 
         commentWriteButton.setOnClickListener(new View.OnClickListener() {
             @Override

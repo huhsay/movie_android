@@ -14,10 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingEnd="30dp"
-        android:paddingStart="30dp"
+        android:paddingEnd="50dp"
+        android:paddingStart="50dp"
         android:background="@drawable/main_background"/>
-
 
     <include
         layout="@layout/menu_list"

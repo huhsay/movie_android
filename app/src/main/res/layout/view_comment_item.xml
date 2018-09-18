@@ -48,7 +48,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
@@ -68,11 +67,10 @@
         android:numStars="5"
         android:rating="5"
         android:scrollbarStyle="insideInset"
-        android:stepSize="1"
+        android:stepSize="0.5"
         app:layout_constraintBottom_toBottomOf="@+id/time"
         app:layout_constraintStart_toEndOf="@+id/time"
         app:layout_constraintTop_toTopOf="@+id/time" />
-
 
     <TextView
         android:id="@+id/review"

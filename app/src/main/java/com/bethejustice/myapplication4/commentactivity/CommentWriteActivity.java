@@ -21,6 +21,8 @@ import com.bethejustice.myapplication4.R;
 
 public class CommentWriteActivity extends AppCompatActivity {
 
+    final String KEY_MOVIEID = "movieId";
+    final String KEY_TITLE = "title";
     RatingBar ratingBar;
     EditText commentView;
     int movieId;
@@ -36,8 +38,8 @@ public class CommentWriteActivity extends AppCompatActivity {
 
 
         Intent receivedIntent = getIntent();
-        movieId = receivedIntent.getIntExtra("movieId", 0);
-        title = receivedIntent.getStringExtra("title");
+        movieId = receivedIntent.getIntExtra(KEY_MOVIEID, 0);
+        title = receivedIntent.getStringExtra(KEY_TITLE);
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.text_reviewWrite));
@@ -45,10 +47,10 @@ public class CommentWriteActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setElevation(0);
 
-        ratingBar =(RatingBar) findViewById(R.id.ratingBar);
-        commentView = (EditText) findViewById(R.id.review);
-        Button cancelButton = (Button) findViewById(R.id.cancelButton);
-        Button saveButton = (Button) findViewById(R.id.saveButton);
+        ratingBar = findViewById(R.id.ratingBar);
+        commentView = findViewById(R.id.review);
+        Button cancelButton = findViewById(R.id.cancelButton);
+        Button saveButton = findViewById(R.id.saveButton);
         TextView titleView = findViewById(R.id.title);
         titleView.setText(title);
 
@@ -73,7 +75,7 @@ public class CommentWriteActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;

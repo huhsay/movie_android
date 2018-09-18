@@ -33,6 +33,7 @@ public class CommentListActivity extends AppCompatActivity {
     ResponseComment responseComment;
     Toolbar toolbar;
 
+    String mainUrl = "http://boostcourse-appapi.connect.or.kr:10000";
     String titleString;
     float user_rating;
     int movieId;
@@ -140,7 +141,7 @@ public class CommentListActivity extends AppCompatActivity {
 
 
     public void sendRequest() {
-        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/readCommentList?id=" + movieId;
+        String url = mainUrl + "movie/readCommentList?id=" + movieId;
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -171,7 +172,7 @@ public class CommentListActivity extends AppCompatActivity {
     }
 
     public void sendCommentLikeRequest(int reviewId, String writer) {
-        String url = "http://boostcourse-appapi.connect.or.kr:10000//movie/increaseRecommend?review_id=" + reviewId +"&writer=" + writer+"&limit=100";
+        String url = mainUrl + "/movie/increaseRecommend?review_id=" + reviewId +"&writer=" + writer+"&limit=100";
 
 
         StringRequest request = new StringRequest(
