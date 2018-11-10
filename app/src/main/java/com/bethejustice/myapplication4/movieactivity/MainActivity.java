@@ -46,12 +46,13 @@ import java.util.ArrayList;
  *  전체적인 컨벤션 맞추기
  *  자바파일이나 리소스 메소드의 이름 재정의하기
  *
- *  mainactivity에서 fragment의 화면전환 수정하기 0815
- *  좋아요 버튼 관련 리팩토링 0814
  *  데이터베이스 관련 코드 정리
  *
  *  메소드의 연계성 줄이기 및 중복된 코드 수정하기
  *  주석달기
+ *
+ *  git으로 관리하기전에 모든 프로젝트진도를 나가버려서 코드가 엉켜있습니다.
+ *  이점 죄송스럽게 생각합니다ㅠㅠ
  *
  */
 
@@ -86,21 +87,8 @@ public class MainActivity extends AppCompatActivity
                 FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
                 manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                //화면전환 수정중
                 transaction.commit();
             }
-
-//            if (requestCode == 400) {
-//
-//                Fragment frg = getSupportFragmentManager().findFragmentById(R.id.container);
-//                final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//                ft.detach(frg);
-//                ft.attach(frg);
-//                ft.commit();
-//                Log.d("hello", "hello");
-//
-//                Toast.makeText(this, "hello", Toast.LENGTH_LONG).show();
-//            }
         }
     }
 
@@ -274,20 +262,19 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        FragmentTransaction tr = getSupportFragmentManager().beginTransaction();;
 
         if (id == R.id.movieList) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intent, 100);
+            Fragment frg = getSupportFragmentManager().findFragmentById(R.id.container);
+            if (frg instanceof MainFragment){
+                tr.remove(frg);
+            } else if (frg == null) {
+            } else {
 
-//            Fragment frg = getSupportFragmentManager().findFragmentById(R.id.container);
-//
-//            if(frg instanceof MainFragment){
-//                FragmentTransaction tr = getSupportFragmentManager().beginTransaction();
-//                tr.remove(frg);
-//                tr.commit();
-//            }
-
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, 100);
+            }
         } else if (id == R.id.movieAPI) {
 
         } else if (id == R.id.movieBook) {
@@ -298,6 +285,7 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        tr.commit();
         return true;
     }
 
@@ -349,12 +337,13 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(String response) {
                         //index 1 => 영화목록, 2 => 상세정보
                         processResponse(response, 2);
+                        Log.d("mainActivityNetwork", String.format("%d개",response.length()));
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Log.d("mainActivityNetwork", error.getMessage());
                     }
                 }
         );
@@ -408,6 +397,7 @@ public class MainActivity extends AppCompatActivity
 
         if(networkConnectionState == NetworkState.TYPE_NOT_CONNECTED){
             Cursor movieListCursor = DatabaseHelper.selectMovieList();
+            Log.d("mainerror","hello");
 
             while(movieListCursor.moveToNext()){
                 Movie temp = new Movie(movieListCursor);

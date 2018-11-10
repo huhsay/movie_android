@@ -22,10 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".commentactivity.CommentListActivity"/>
-        <activity android:name=".commentactivity.CommentWriteActivity"/>
-        <activity android:name=".movieactivity.ImgActivity"/>
-        <activity android:name=".movieactivity.MainActivity"/>
+        <activity android:name=".commentactivity.CommentListActivity"></activity>
+        <activity android:name=".commentactivity.CommentWriteActivity"></activity>
+        <activity android:name=".movieactivity.ImgActivity"></activity>
+        <activity android:name=".movieactivity.MainActivity"></activity>
     </application>
 
 </manifest>

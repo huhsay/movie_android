@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RatingBar;
@@ -28,12 +29,13 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 public class CommentListActivity extends AppCompatActivity {
+    final int REQUEST_SHOWALL_WRITE = 500;
     CommentAdapter adapter;
     RecyclerView recyclerView;
     ResponseComment responseComment;
     Toolbar toolbar;
 
-    String mainUrl = "http://boostcourse-appapi.connect.or.kr:10000";
+    String mainUrl = "http://boostcourse-appapi.connect.or.kr:10000/";
     String titleString;
     float user_rating;
     int movieId;
@@ -41,12 +43,20 @@ public class CommentListActivity extends AppCompatActivity {
     NetworkState networkState;
 
 
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        sendRequest();
+//
+//    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK) {
-            if (requestCode == 500) {
+            if (requestCode == REQUEST_SHOWALL_WRITE) {
                 if (networkState.checkNetworkConnection() == NetworkState.TYPE_NOT_CONNECTED) {
                     Cursor commentCursor = DatabaseHelper.selectComment(movieId);
                     ArrayList<Comment> list = new ArrayList<>();
@@ -80,7 +90,7 @@ public class CommentListActivity extends AppCompatActivity {
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         ratingBar.setRating(receivedIntent.getFloatExtra("rating", 0f));
         TextView ratings = findViewById(R.id.ratings);
-        ratings.setText(String.format("%f (1,142명 참여)", user_rating));
+        ratings.setText(String.format("%.2f (1,142명 참여)", user_rating));
         final TextView title = findViewById(R.id.title);
         title.setText(titleString);
 
@@ -124,7 +134,7 @@ public class CommentListActivity extends AppCompatActivity {
                 intent.putExtra("title", titleString)
                         .putExtra("movieId", movieId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivityForResult(intent, 500);
+                startActivityForResult(intent, REQUEST_SHOWALL_WRITE);
             }
         });
     }
@@ -141,7 +151,8 @@ public class CommentListActivity extends AppCompatActivity {
 
 
     public void sendRequest() {
-        String url = mainUrl + "movie/readCommentList?id=" + movieId;
+        String url = mainUrl +"/movie/readCommentList?id=" + movieId;
+        Log.d("url", url);
 
         StringRequest request = new StringRequest(
                 Request.Method.GET,
@@ -149,6 +160,7 @@ public class CommentListActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("urlresponsetest","hello");
                         processResponse(response);
                     }
                 },
@@ -156,6 +168,7 @@ public class CommentListActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
+                        Log.d("commentListResponse", error.getMessage());
                     }
                 }
         );
@@ -196,7 +209,10 @@ public class CommentListActivity extends AppCompatActivity {
     }
 
     public void setCommentList(ArrayList<Comment> list) {
+
+        Log.d("list_cycle", list.get(1).getWriter());
         adapter.addItemAll(list);
         adapter.notifyDataSetChanged();
+
     }
 }
